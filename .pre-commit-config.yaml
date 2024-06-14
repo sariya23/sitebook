@@ -1,0 +1,46 @@
+repos:
+    - repo: local
+      hooks:
+        - id: autoflake
+          name: autoflake ❄️
+          entry: autoflake
+          language: system
+          args:
+            - --in-place
+            - --remove-all-unused-imports
+            - --remove-unused-variables
+          files: \.py$
+          always_run: false
+          pass_filenames: true
+          verbose: false
+
+        - id: isort
+          name: isort 📚
+          entry: isort
+          language: python
+          files: \.py$
+          verbose: false
+
+        - id: black
+          name: Black fix 🔧
+          entry: black
+          language: system
+          files: \.py$
+          always_run: false
+          verbose: false
+
+        - id: flake8
+          name: Flake8 🎱
+          entry: flake8
+          files: \.py$
+          args:
+              - --max-line-length=258
+          language: system
+          always_run: false
+          pass_filenames: true
+          verbose: false
+        - id: mypy
+          name: Mypy
+          entry: mypy
+          files: \.py$
+          language: system
