@@ -44,3 +44,4 @@ repos:
           entry: mypy
           files: \.py$
           language: system
+          args: ["--exclude", "^books/migrations/$", "--ignore"]
