@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models  # type: ignore
 from django.urls import reverse  # type: ignore
 
@@ -20,7 +21,9 @@ class Book(models.Model):
     description = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     author = models.CharField(max_length=70)
-    rating = models.IntegerField(null=False, default=0)
+    rating = models.IntegerField(
+        null=False, default=0, validators=[MaxValueValidator(5), MinValueValidator(0)]
+    )
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(
