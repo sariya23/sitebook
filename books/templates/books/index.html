@@ -4,6 +4,7 @@
 <ul class="list-articles">
 	{% for book in books %}
 		<li><h2>{{ book.title }}</h2>
+		<p>Жанр: <i>{{ book.genre }}</i></p>
 		{% autoescape off %}
 		{{book.description|linebreaks|truncatewords:40}}
 		{% endautoescape %}

@@ -17,6 +17,7 @@ class Book(models.Model):
         DRAFT = (0, "Черновик")
         PUBLISHED = (1, "Опубликовано")
 
+    genre = models.ForeignKey("Genre", on_delete=models.PROTECT)
     title = models.CharField(max_length=70)
     description = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
@@ -38,3 +39,11 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         return reverse("book", kwargs={"book_slug": self.slug})
+
+
+class Genre(models.Model):
+    genre = models.CharField(max_length=50, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True)
+
+    def __str__(self) -> str:
+        return self.genre

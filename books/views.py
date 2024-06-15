@@ -1,8 +1,7 @@
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
+from django.shortcuts import get_object_or_404, render
 
 from .models import Book
-
 
 menu = [
     {"title": "Home", "url_name": "home"},
@@ -12,11 +11,6 @@ menu = [
     {"title": "Login", "url_name": "login"},
 ]
 
-genres = [
-    {"id": 1, "genre": "Зарубежная классика"},
-    {"id": 2, "genre": "Русская классика"},
-    {"id": 3, "genre": "Хоррор"},
-]
 
 def index(request: HttpRequest) -> HttpResponse:
     context = {
@@ -26,6 +20,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "genre_selected": 0,
     }
     return render(request, "books/index.html", context)
+
 
 def about(request: HttpRequest) -> HttpResponse:
     return render(request, "books/about.html", {"title": "About page", "menu": menu})
@@ -62,6 +57,7 @@ def show_genre(request: HttpRequest, genre_id: int) -> HttpResponse:
         "genre_selected": genre_id,
     }
     return render(request, "books/index.html", context)
+
 
 def page_now_found(request: HttpRequest, exception) -> HttpResponseNotFound:
     return HttpResponseNotFound("<h1>Page not found</h1>")
