@@ -5,7 +5,7 @@
         </li>
     {% else %}
         <li>
-            <a href="{% url 'genre' genre.id %}">{{ genre.genre }}</a>
+            <a href="{{ genre.get_absolute_url }}">{{ genre.genre }}</a>
         </li>
     {% endif %}
 {% endfor %}

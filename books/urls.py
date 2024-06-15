@@ -1,7 +1,6 @@
 from django.urls import path, register_converter
 
-from . import views
-from . import converters
+from . import converters, views
 
 register_converter(converters.FourDigitYearConverter, type_name="year")
 
@@ -13,5 +12,5 @@ urlpatterns = [
     path("addbook/", views.add_book, name="add_book"),
     path("contact/", views.contact, name="contact"),
     path("login/", views.login, name="login"),
-    path("genre/<int:genre_id>/", views.show_genre, name="genre"),
+    path("genre/<slug:genre_slug>/", views.show_genre, name="genre"),
 ]

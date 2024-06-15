@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 
-from .models import Book
+from .models import Book, Genre
 
 menu = [
     {"title": "Home", "url_name": "home"},
@@ -49,12 +49,14 @@ def login(request: HttpRequest) -> HttpResponse:
     return HttpResponse("Login page")
 
 
-def show_genre(request: HttpRequest, genre_id: int) -> HttpResponse:
+def show_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
+    genre = get_object_or_404(Genre, slug=genre_slug)
+    genres = Book.published_book.filter(genre_id=genre.pk)
     context = {
-        "title": "Home page",
+        "title": f"Жанр {genre.genre}",
         "menu": menu,
-        "books": Book.published_book.all(),
-        "genre_selected": genre_id,
+        "books": genres,
+        "genre_selected": genre.pk,
     }
     return render(request, "books/index.html", context)
 
