@@ -22,7 +22,9 @@ class Book(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
-    author = models.CharField(max_length=70)
+    author = models.ForeignKey(
+        "Author", on_delete=models.SET_NULL, null=True, related_name="author"
+    )
     rating = models.IntegerField(
         null=False, default=0, validators=[MaxValueValidator(5), MinValueValidator(0)]
     )
@@ -62,3 +64,12 @@ class Tags(models.Model):
 
     def get_absolute_url(self):
         return reverse("tags", kwargs={"tag_slug": self.slug})
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name} {self.surname}"
