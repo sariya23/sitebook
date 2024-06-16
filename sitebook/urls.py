@@ -28,3 +28,5 @@ urlpatterns = [
 
 
 handler404 = page_now_found
+admin.site.site_header = "Админка"
+admin.site.index_title = "Книгиии"

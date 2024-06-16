@@ -10,28 +10,43 @@ class PublishedBookManager(models.Manager):
 
 class Book(models.Model):
     class Meta:
-        ordering = ["-rating", "-title"]
+        ordering = ["id", "-rating", "-title"]
         indexes = [models.Index(fields=["-rating"])]
+        verbose_name = "Книга"
+        verbose_name_plural = "Книги"
 
     class PublishStatus(models.IntegerChoices):
         DRAFT = (0, "Черновик")
         PUBLISHED = (1, "Опубликовано")
 
-    genre = models.ForeignKey("Genre", on_delete=models.PROTECT, related_name="books")
-    tags = models.ManyToManyField("Tags", blank=True, related_name="tags")
-    title = models.CharField(max_length=70)
-    description = models.TextField(blank=True)
+    genre = models.ForeignKey(
+        "Genre", on_delete=models.PROTECT, related_name="books", verbose_name="Жанр"
+    )
+    tags = models.ManyToManyField(
+        "Tags", blank=True, related_name="tags", verbose_name="Тэги"
+    )
+    title = models.CharField(max_length=70, verbose_name="Заголовок")
+    description = models.TextField(blank=True, verbose_name="Описание")
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     author = models.ForeignKey(
-        "Author", on_delete=models.SET_NULL, null=True, related_name="author"
+        "Author",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="author",
+        verbose_name="Автор",
     )
     rating = models.IntegerField(
-        null=False, default=0, validators=[MaxValueValidator(5), MinValueValidator(0)]
+        null=False,
+        default=0,
+        validators=[MaxValueValidator(5), MinValueValidator(0)],
+        verbose_name="Рейтинг",
     )
-    time_create = models.DateTimeField(auto_now_add=True)
-    time_update = models.DateTimeField(auto_now=True)
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    time_update = models.DateTimeField(auto_now=True, verbose_name="Время обновления")
     is_published = models.BooleanField(
-        choices=PublishStatus.choices, default=PublishStatus.PUBLISHED
+        choices=PublishStatus.choices,
+        default=PublishStatus.PUBLISHED,
+        verbose_name="Опубликовано",
     )
 
     objects = models.Manager()
@@ -45,7 +60,11 @@ class Book(models.Model):
 
 
 class Genre(models.Model):
-    genre = models.CharField(max_length=50, db_index=True)
+    class Meta:
+        verbose_name = "Жанр"
+        verbose_name_plural = "Жанры"
+
+    genre = models.CharField(max_length=50, db_index=True, verbose_name="Жанр")
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
 
     def __str__(self) -> str:
@@ -56,7 +75,11 @@ class Genre(models.Model):
 
 
 class Tags(models.Model):
-    tag = models.CharField(max_length=100, db_index=True)
+    class Meta:
+        verbose_name = "Тэг"
+        verbose_name_plural = "Тэги"
+
+    tag = models.CharField(max_length=100, db_index=True, verbose_name="Тэг")
     slug = models.SlugField(max_length=255, db_index=True, unique=True)
 
     def __str__(self) -> str:
@@ -67,8 +90,12 @@ class Tags(models.Model):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
+    class Meta:
+        verbose_name = "Автор"
+        verbose_name_plural = "Авторы"
+
+    name = models.CharField(max_length=255, verbose_name="Имя")
+    surname = models.CharField(max_length=255, verbose_name="Фамилия")
     slug = models.SlugField(max_length=255)
 
     def __str__(self):
