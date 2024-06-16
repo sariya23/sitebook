@@ -65,7 +65,7 @@ def show_book_by_tag(request: HttpRequest, tag_slug: str) -> HttpResponse:
     tag = get_object_or_404(Tags, slug=tag_slug)
     books_with_tag = tag.tags.filter(
         is_published=Book.PublishStatus.PUBLISHED
-    ).select_realated("genre")
+    ).select_related("genre")
     print(books_with_tag)
     data = {
         "title": tag.tag,
