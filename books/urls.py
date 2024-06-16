@@ -13,4 +13,5 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("login/", views.login, name="login"),
     path("genre/<slug:genre_slug>/", views.show_genre, name="genre"),
+    path("tag/<slug:tag_slug>/", views.show_book_by_tag, name="tags"),
 ]

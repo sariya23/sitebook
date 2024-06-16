@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 
-from .models import Book, Genre
+from .models import Book, Genre, Tags
 
 menu = [
     {"title": "Home", "url_name": "home"},
@@ -59,6 +59,20 @@ def show_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
         "genre_selected": genre.pk,
     }
     return render(request, "books/index.html", context)
+
+
+def show_book_by_tag(request: HttpRequest, tag_slug: str) -> HttpResponse:
+    tag = get_object_or_404(Tags, slug=tag_slug)
+    books_with_tag = tag.tags.filter(is_published=Book.PublishStatus.PUBLISHED)
+    print(books_with_tag)
+    data = {
+        "title": tag.tag,
+        "menu": menu,
+        "books": books_with_tag,
+        "slug_selected": None,
+    }
+
+    return render(request, "books/index.html", data)
 
 
 def page_now_found(request: HttpRequest, exception) -> HttpResponseNotFound:

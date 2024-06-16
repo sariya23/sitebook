@@ -32,17 +32,17 @@
 <!-- Sidebar слева -->
 	<td valign="top" class="left-chapters">
 	<ul id="leftchapters">
-        {% if genre_selected == 0 or genre_selected is None %}
-		    <li class="selected">Все категории</li>
+        {% if genre_selected == 0 %}
+		    <li class="selected">Все жанры</li>
         {% else %}
             <li>
-                <a href="{% url 'home' %}">Все категории</a>
+                <a href="{% url 'home' %}">Все жанры</a>
             </li>
         {% endif %}
         {% show_genres genre_selected %}
-		<li class="share">
-		<p>Наш канал</p>
-		<a class="share-yt" href="https://www.youtube.com/channel/UClJzWfGWuGJL2t-3dYKcHTA/playlists" target="_blank" rel="nofollow"></a>
+		
+		<li>
+			{% show_tags %}
 		</li>
 	</ul>
 </td>
