@@ -5,7 +5,7 @@ from django.urls import reverse  # type: ignore
 
 class PublishedBookManager(models.Manager):
     def get_queryset(self) -> models.QuerySet:
-        return super().get_queryset().filter(is_published=Book.PublishStatus.PUBLISHED)
+        return super().get_queryset().filter(is_published=1)
 
 
 class Book(models.Model):
@@ -44,8 +44,6 @@ class Book(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время обновления")
     is_published = models.BooleanField(
-        choices=PublishStatus.choices,
-        default=PublishStatus.PUBLISHED,
         verbose_name="Опубликовано",
     )
 
