@@ -16,7 +16,7 @@ def index(request: HttpRequest) -> HttpResponse:
     context = {
         "title": "Home page",
         "menu": menu,
-        "books": Book.published_book.all(),
+        "books": Book.published_book.all().select_related("genre"),
         "genre_selected": 0,
     }
     return render(request, "books/index.html", context)
@@ -51,7 +51,7 @@ def login(request: HttpRequest) -> HttpResponse:
 
 def show_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
     genre = get_object_or_404(Genre, slug=genre_slug)
-    genres = Book.published_book.filter(genre_id=genre.pk)
+    genres = Book.published_book.filter(genre_id=genre.pk).select_related("genre")
     context = {
         "title": f"Жанр {genre.genre}",
         "menu": menu,
@@ -63,7 +63,9 @@ def show_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
 
 def show_book_by_tag(request: HttpRequest, tag_slug: str) -> HttpResponse:
     tag = get_object_or_404(Tags, slug=tag_slug)
-    books_with_tag = tag.tags.filter(is_published=Book.PublishStatus.PUBLISHED)
+    books_with_tag = tag.tags.filter(
+        is_published=Book.PublishStatus.PUBLISHED
+    ).select_realated("genre")
     print(books_with_tag)
     data = {
         "title": tag.tag,

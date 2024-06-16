@@ -8,20 +8,22 @@
 				<p class="first">Жанр: {{ book.genre.genre }}</p>
 			</div>
 			<h2>{{ book.title }}, {{ book.author.name }} {{ book.author.surname }}</h2>
-			{% if book.tags.all %}
-				<p style="display: inline;"><i>Теги: </i></p>
-				{% for t in book.tags.all %}
-					{% if not forloop.last %}
-						<p style="display: inline;">
-							<a href="{{ t.get_absolute_url }}">{{ t.tag }}, </a>
-						</p>
-					{% else %}
-						<p style="display: inline;">
-							<a href="{{ t.get_absolute_url }}">{{ t.tag }}</a>
-						</p>
-					{% endif %}
-				{% endfor %}
-			{% endif %}
+			{% with tags=book.tags.all %}
+				{% if tags %}
+					<p style="display: inline;"><i>Теги: </i></p>
+					{% for t in tags %}
+						{% if not forloop.last %}
+							<p style="display: inline;">
+								<a href="{{ t.get_absolute_url }}">{{ t.tag }}, </a>
+							</p>
+						{% else %}
+							<p style="display: inline;">
+								<a href="{{ t.get_absolute_url }}">{{ t.tag }}</a>
+							</p>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
 			{% autoescape off %}
 			{{book.description|linebreaks|truncatewords:40}}
 			{% endautoescape %}
