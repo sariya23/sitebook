@@ -1,11 +1,49 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models  # type: ignore
 from django.urls import reverse  # type: ignore
+from django.utils.text import slugify
 
 
 class PublishedBookManager(models.Manager):
     def get_queryset(self) -> models.QuerySet:
         return super().get_queryset().filter(is_published=1)
+
+
+def translate_to_english(text: str) -> str:
+    alphabet = {
+        "а": "a",
+        "б": "b",
+        "в": "v",
+        "г": "g",
+        "д": "d",
+        "е": "e",
+        "ё": "yo",
+        "ж": "zh",
+        "з": "z",
+        "и": "i",
+        "й": "j",
+        "к": "k",
+        "л": "l",
+        "м": "m",
+        "н": "n",
+        "о": "o",
+        "п": "p",
+        "р": "r",
+        "с": "s",
+        "т": "t",
+        "у": "u",
+        "ф": "f",
+        "х": "kh",
+        "ц": "ts",
+        "ч": "ch",
+        "ш": "sh",
+        "щ": "shch",
+        "ы": "i",
+        "э": "e",
+        "ю": "yu",
+        "я": "ya",
+    }
+    return slugify("".join(alphabet.get(w, w) for w in text.lower()))
 
 
 class Book(models.Model):
@@ -52,6 +90,10 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse("book", kwargs={"book_slug": self.slug})
 
+    def save(self, *args, **kwargs):
+        self.slug = translate_to_english(self.title)
+        super().save(*args, **kwargs)
+
 
 class Genre(models.Model):
     class Meta:
@@ -66,6 +108,10 @@ class Genre(models.Model):
 
     def get_absolute_url(self):
         return reverse("genre", kwargs={"genre_slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = translate_to_english(self.genre)
+        super().save(*args, **kwargs)
 
 
 class Tags(models.Model):
@@ -82,6 +128,10 @@ class Tags(models.Model):
     def get_absolute_url(self):
         return reverse("tags", kwargs={"tag_slug": self.slug})
 
+    def save(self, *args, **kwargs):
+        self.slug = translate_to_english(self.tag)
+        super().save(*args, **kwargs)
+
 
 class Author(models.Model):
     class Meta:
@@ -94,3 +144,7 @@ class Author(models.Model):
 
     def __str__(self):
         return f"{self.name} {self.surname}"
+
+    def save(self, *args, **kwargs):
+        self.slug = translate_to_english(f"{self.name} {self.surname}")
+        super().save(*args, **kwargs)
