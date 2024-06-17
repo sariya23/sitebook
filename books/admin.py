@@ -7,11 +7,13 @@ from .models import Author, Book, Genre, Tags
 
 @admin.register(Book)
 class BooksAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "time_create", "rating", "is_published")
+    list_display = ("id", "title", "time_create", "rating", "genre", "is_published")
     list_display_links = ("id", "title")
     list_editable = ("is_published",)
     list_per_page = 5
     actions = ("set_published", "set_draft")
+    search_fields = ("title",)
+    list_filter = ("genre",)
 
     @admin.action(description="Опубликовать выбранное")
     def set_published(self, request: HttpRequest, quesryset: QuerySet):
