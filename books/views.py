@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
+from .forms import AddBookForm
 from .models import Book, Genre, Tags
 
 menu = [
@@ -38,7 +39,25 @@ def book(request: HttpRequest, book_slug: str) -> HttpResponse:
 
 
 def add_book(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Add book page")
+    if request.method == "POST":
+        form = AddBookForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            try:
+                Book.objects.create(**form.cleaned_data)
+                return redirect("home")
+            except Exception as e:
+                form.add_error(None, "Ошибка добавления поста")
+                print(str(e))
+    else:
+        form = AddBookForm(request.POST)
+
+    data = {
+        "menu": menu,
+        "title": "Добавить книгу",
+        "form": form,
+    }
+    return render(request, "books/add_book.html", data)
 
 
 def contact(request: HttpRequest) -> HttpResponse:
