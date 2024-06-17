@@ -9,15 +9,15 @@ from .models import Author, Book, Genre, Tags
 class BooksAdmin(admin.ModelAdmin):
     fields = (
         "title",
+        "slug",
         "author",
         "description",
         "rating",
         "genre",
         "tags",
-        "slug",
         "is_published",
     )
-    readonly_fields = ("slug",)
+    prepopulated_fields = {"slug": ("title",)}
     list_display = ("id", "title", "time_create", "rating", "genre", "is_published")
     list_display_links = ("id", "title")
     list_editable = ("is_published",)
@@ -41,7 +41,7 @@ class BooksAdmin(admin.ModelAdmin):
 
 @admin.register(Genre)
 class GenresAdmin(admin.ModelAdmin):
-    readonly_fields = ("slug",)
+    prepopulated_fields = {"slug": ("genre",)}
     list_display = ("id", "genre")
     list_display_links = ("id", "genre")
     ordering = ("id",)
@@ -49,7 +49,7 @@ class GenresAdmin(admin.ModelAdmin):
 
 @admin.register(Tags)
 class TagsAdmin(admin.ModelAdmin):
-    readonly_fields = ("slug",)
+    prepopulated_fields = {"slug": ("tag",)}
     list_display = ("id", "tag")
     list_display_links = ("id", "tag")
     ordering = ("id",)
@@ -57,7 +57,7 @@ class TagsAdmin(admin.ModelAdmin):
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    readonly_fields = ("slug",)
+    prepopulated_fields = {"slug": ("name", "surname")}
     list_display = ("id", "name", "surname")
     list_display_links = ("id", "name", "surname")
     ordering = ("id",)
