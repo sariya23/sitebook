@@ -26,7 +26,7 @@ def about(request: HttpRequest) -> HttpResponse:
     return render(request, "books/about.html", {"title": "About page", "menu": menu})
 
 
-def book(request: HttpRequest, book_slug: int) -> HttpResponse:
+def book(request: HttpRequest, book_slug: str) -> HttpResponse:
     book = get_object_or_404(Book, slug=book_slug)
     data = {
         "title": book.title,
@@ -63,9 +63,7 @@ def show_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
 
 def show_book_by_tag(request: HttpRequest, tag_slug: str) -> HttpResponse:
     tag = get_object_or_404(Tags, slug=tag_slug)
-    books_with_tag = tag.tags.filter(
-        is_published=Book.PublishStatus.PUBLISHED
-    ).select_related("genre")
+    books_with_tag = tag.tags.filter(is_published=1).select_related("genre")
     print(books_with_tag)
     data = {
         "title": tag.tag,

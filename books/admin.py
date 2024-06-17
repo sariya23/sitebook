@@ -7,6 +7,16 @@ from .models import Author, Book, Genre, Tags
 
 @admin.register(Book)
 class BooksAdmin(admin.ModelAdmin):
+    fields = (
+        "title",
+        "author",
+        "description",
+        "rating",
+        "genre",
+        "tags",
+        "slug",
+        "is_published",
+    )
     list_display = ("id", "title", "time_create", "rating", "genre", "is_published")
     list_display_links = ("id", "title")
     list_editable = ("is_published",)

@@ -15,10 +15,6 @@ class Book(models.Model):
         verbose_name = "Книга"
         verbose_name_plural = "Книги"
 
-    class PublishStatus(models.IntegerChoices):
-        DRAFT = (0, "Черновик")
-        PUBLISHED = (1, "Опубликовано")
-
     genre = models.ForeignKey(
         "Genre", on_delete=models.PROTECT, related_name="books", verbose_name="Жанр"
     )
