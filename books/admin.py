@@ -25,6 +25,7 @@ class BooksAdmin(admin.ModelAdmin):
     actions = ("set_published", "set_draft")
     search_fields = ("title",)
     list_filter = ("genre",)
+    filter_horizontal = ("tags",)
 
     @admin.action(description="Опубликовать выбранное")
     def set_published(self, request: HttpRequest, quesryset: QuerySet):
