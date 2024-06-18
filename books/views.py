@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, ListView
 
 from .forms import AddBookForm, UploadFileForm
@@ -28,28 +29,17 @@ class BookHome(ListView):
 
 
 class AddBook(FormView):
-    def get(self, request: HttpRequest) -> HttpResponse:
-        form = AddBookForm(request.POST)
+    form_class = AddBookForm
+    template_name = "books/add_book.html"
+    success_url = reverse_lazy("home")
+    extra_context = {
+        "title": "Добавить книгу",
+        "menu": menu,
+    }
 
-        data = {
-            "menu": menu,
-            "title": "Добавить книгу",
-            "form": form,
-        }
-        return render(request, "books/add_book.html", data)
-
-    def post(self, request: HttpRequest) -> HttpResponse:
-        form = AddBookForm(request.POST, request.FILES)
-        if form.is_valid():
-            print(form.cleaned_data)
-            form.save()
-            return redirect("home")
-        data = {
-            "menu": menu,
-            "title": "Добавить книгу",
-            "form": form,
-        }
-        return render(request, "books/add_book.html", data)
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 class BookGenres(ListView):
