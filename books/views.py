@@ -49,7 +49,7 @@ def show_book(request: HttpRequest, book_slug: str) -> HttpResponse:
 
 def add_book(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
-        form = AddBookForm(request.POST)
+        form = AddBookForm(request.POST, request.FILES)
         if form.is_valid():
             print(form.cleaned_data)
             form.save()
@@ -99,5 +99,5 @@ def show_book_by_tag(request: HttpRequest, tag_slug: str) -> HttpResponse:
     return render(request, "books/index.html", data)
 
 
-def page_now_found(request: HttpRequest, exception) -> HttpResponseNotFound:
+def page_not_found(request: HttpRequest, exception) -> HttpResponseNotFound:
     return HttpResponseNotFound("<h1>Page not found</h1>")

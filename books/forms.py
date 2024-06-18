@@ -18,6 +18,7 @@ class AddBookForm(forms.ModelForm):
             "title",
             "description",
             "slug",
+            "photo",
             "author",
             "rating",
             "genre",

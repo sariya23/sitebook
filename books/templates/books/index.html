@@ -7,6 +7,11 @@
 			<div class="article-panel">
 				<p class="first">Жанр: {{ book.genre.genre }}</p>
 			</div>
+			{% if book.photo %}
+				<p>
+					<img src="{{ book.photo.url }}" alt="oops" class="img-article-left thumb">
+				</p>
+			{% endif %}
 			<h2>{{ book.title }}, {{ book.author.name }} {{ book.author.surname }}</h2>
 			{% with tags=book.tags.all %}
 				{% if tags %}

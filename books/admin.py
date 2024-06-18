@@ -11,6 +11,7 @@ class BooksAdmin(admin.ModelAdmin):
         "title",
         "slug",
         "author",
+        "photo",
         "description",
         "rating",
         "genre",

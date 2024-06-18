@@ -80,6 +80,13 @@ class Book(models.Model):
     is_published = models.BooleanField(
         verbose_name="Опубликовано",
     )
+    photo = models.ImageField(
+        upload_to="photos/%Y/%m/%d",
+        default=None,
+        blank=True,
+        null=True,
+        verbose_name="Обложка книги",
+    )
 
     objects = models.Manager()
     published_book = PublishedBookManager()
@@ -147,4 +154,4 @@ class Author(models.Model):
 
 
 class UploadFile(models.Model):
-    file = models.FileField(upload_to="uploads_model")
+    file = models.ImageField(upload_to="uploads_model")
