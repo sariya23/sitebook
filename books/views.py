@@ -43,12 +43,8 @@ def add_book(request: HttpRequest) -> HttpResponse:
         form = AddBookForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
-            try:
-                Book.objects.create(**form.cleaned_data)
-                return redirect("home")
-            except Exception as e:
-                form.add_error(None, "Ошибка добавления поста")
-                print(str(e))
+            form.save()
+            return redirect("home")
     else:
         form = AddBookForm(request.POST)
 

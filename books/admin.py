@@ -17,7 +17,6 @@ class BooksAdmin(admin.ModelAdmin):
         "tags",
         "is_published",
     )
-    prepopulated_fields = {"slug": ("title",)}
     list_display = ("id", "title", "time_create", "rating", "genre", "is_published")
     list_display_links = ("id", "title")
     list_editable = ("is_published",)

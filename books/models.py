@@ -90,10 +90,6 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse("book", kwargs={"book_slug": self.slug})
 
-    def save(self, *args, **kwargs):
-        self.slug = translate_to_english(self.title)
-        super().save(*args, **kwargs)
-
 
 class Genre(models.Model):
     class Meta:
