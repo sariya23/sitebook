@@ -1,8 +1,9 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import AddBookForm
+from .forms import AddBookForm, UploadFileForm
 from .models import Book, Genre, Tags
+from .utils import handle_upload_file
 
 menu = [
     {"title": "Home", "url_name": "home"},
@@ -24,7 +25,15 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def about(request: HttpRequest) -> HttpResponse:
-    return render(request, "books/about.html", {"title": "About page", "menu": menu})
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_upload_file(form.cleaned_data["file"])
+    else:
+        form = UploadFileForm()
+    return render(
+        request, "books/about.html", {"title": "About page", "menu": menu, "form": form}
+    )
 
 
 def book(request: HttpRequest, book_slug: str) -> HttpResponse:

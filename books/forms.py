@@ -36,3 +36,7 @@ class AddBookForm(forms.ModelForm):
             raise ValidationError("Максимальная длина заголовка 70")
 
         return title
+
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField(label="Файл")
