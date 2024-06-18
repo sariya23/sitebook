@@ -144,3 +144,7 @@ class Author(models.Model):
     def save(self, *args, **kwargs):
         self.slug = translate_to_english(f"{self.name} {self.surname}")
         super().save(*args, **kwargs)
+
+
+class UploadFile(models.Model):
+    file = models.FileField(upload_to="uploads_model")

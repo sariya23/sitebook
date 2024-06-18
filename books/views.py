@@ -2,8 +2,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import AddBookForm, UploadFileForm
-from .models import Book, Genre, Tags
-from .utils import handle_upload_file
+from .models import Book, Genre, Tags, UploadFile
 
 menu = [
     {"title": "Home", "url_name": "home"},
@@ -28,7 +27,8 @@ def about(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_upload_file(form.cleaned_data["file"])
+            upload_file = UploadFile(file=form.cleaned_data["file"])
+            upload_file.save()
     else:
         form = UploadFileForm()
     return render(
