@@ -29,6 +29,7 @@ class BooksAdmin(admin.ModelAdmin):
         "genre",
         "is_published",
     )
+    save_on_top = True
     list_display_links = ("id", "title")
     list_editable = ("is_published",)
     readonly_fields = ("book_photo",)
