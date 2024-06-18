@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.db.models import QuerySet
 from django.http import HttpRequest
+from django.utils.safestring import mark_safe
 
 from .models import Author, Book, Genre, Tags
 
@@ -12,15 +13,25 @@ class BooksAdmin(admin.ModelAdmin):
         "slug",
         "author",
         "photo",
+        "book_photo",
         "description",
         "rating",
         "genre",
         "tags",
         "is_published",
     )
-    list_display = ("id", "title", "time_create", "rating", "genre", "is_published")
+    list_display = (
+        "id",
+        "book_photo",
+        "title",
+        "time_create",
+        "rating",
+        "genre",
+        "is_published",
+    )
     list_display_links = ("id", "title")
     list_editable = ("is_published",)
+    readonly_fields = ("book_photo",)
     list_per_page = 5
     actions = ("set_published", "set_draft")
     search_fields = ("title",)
@@ -38,6 +49,12 @@ class BooksAdmin(admin.ModelAdmin):
         self.message_user(
             request, f"Снято с публикации {count} записей(сь)", messages.WARNING
         )
+
+    @admin.display(description="Обложка книги")
+    def book_photo(self, book: Book):
+        if book.photo:
+            return mark_safe(f"<img src='{book.photo.url}' width=50>")
+        return "Без обложки"
 
 
 @admin.register(Genre)
