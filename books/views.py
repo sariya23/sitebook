@@ -36,7 +36,7 @@ def about(request: HttpRequest) -> HttpResponse:
     )
 
 
-def book(request: HttpRequest, book_slug: str) -> HttpResponse:
+def show_book(request: HttpRequest, book_slug: str) -> HttpResponse:
     book = get_object_or_404(Book, slug=book_slug)
     data = {
         "title": book.title,
