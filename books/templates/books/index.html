@@ -2,39 +2,57 @@
 
 {% block content %}
 <ul class="list-articles">
-	{% for book in books %}
-		<li>
-			<div class="article-panel">
-				<p class="first">Жанр: {{ book.genre.genre }}</p>
-			</div>
-			{% if book.photo %}
-				<p>
-					<img src="{{ book.photo.url }}" alt="oops" class="img-article-left thumb">
-				</p>
-			{% endif %}
-			<h2>{{ book.title }}, {{ book.author.name }} {{ book.author.surname }}</h2>
-			{% with tags=book.tags.all %}
-				{% if tags %}
-					<p style="display: inline;"><i>Теги: </i></p>
-					{% for t in tags %}
-						{% if not forloop.last %}
-							<p style="display: inline;">
-								<a href="{{ t.get_absolute_url }}">{{ t.tag }}, </a>
-							</p>
-						{% else %}
-							<p style="display: inline;">
-								<a href="{{ t.get_absolute_url }}">{{ t.tag }}</a>
-							</p>
-						{% endif %}
-					{% endfor %}
-				{% endif %}
-			{% endwith %}
-			{% autoescape off %}
-			{{book.description|linebreaks|truncatewords:40}}
-			{% endautoescape %}
-			<div class="clear"></div>
-			<p class="link-read-post"><a href="{{ book.get_absolute_url }}">Читать пост</a></p>
-		</li>
-	{% endfor %}
+    {% for book in books %}
+    <li>
+        <div class="article-panel">
+            <p class="first">Жанр: {{ book.genre.genre }}</p>
+        </div>
+        {% if book.photo %}
+        <p>
+            <img src="{{ book.photo.url }}" alt="oops" class="img-article-left thumb">
+        </p>
+        {% endif %}
+        <h2>{{ book.title }}, {{ book.author.name }} {{ book.author.surname }}</h2>
+        {% with tags=book.tags.all %}
+        {% if tags %}
+        <p style="display: inline;"><i>Теги: </i></p>
+        {% for t in tags %}
+        {% if not forloop.last %}
+        <p style="display: inline;">
+            <a href="{{ t.get_absolute_url }}">{{ t.tag }}, </a>
+        </p>
+        {% else %}
+        <p style="display: inline;">
+            <a href="{{ t.get_absolute_url }}">{{ t.tag }}</a>
+        </p>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% autoescape off %}
+        {{book.description|linebreaks|truncatewords:40}}
+        {% endautoescape %}
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ book.get_absolute_url }}">Читать пост</a></p>
+    </li>
+    {% endfor %}
 </ul>
+{% endblock %}
+
+{% block pagination %}
+{% if page_obj.has_other_pages %}
+<nav class="list-pages">
+    <ul>
+        {% for page_number in paginator.page_range %}
+        {% if page_obj.number == page_number %}
+        <li class="page-num page-num-selected">{{ page_number }}</li>
+        {% elif page_number >= page_obj.number|add:-2 and page_number <= page_obj.number|add:2 %}
+        <li class="page-num">
+            <a href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{% endif %}
 {% endblock %}

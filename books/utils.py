@@ -13,6 +13,7 @@ class DataMixin:
     title_page: Optional[str] = None
     genre_selected: Optional[int] = None
     extra_context: dict[str, Any] = {}
+    paginate_by = 3
 
     def __init__(self):
         if self.title_page is not None:
