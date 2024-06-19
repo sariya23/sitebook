@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "books.apps.BooksConfig",
     "debug_toolbar",
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
