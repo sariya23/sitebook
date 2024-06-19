@@ -1,48 +1,31 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
 from .forms import AddBookForm, UploadFileForm
 from .models import Book, Tags, UploadFile
-
-menu = [
-    {"title": "Home", "url_name": "home"},
-    {"title": "About", "url_name": "about"},
-    {"title": "Add book", "url_name": "add_book"},
-    {"title": "Contact", "url_name": "contact"},
-    {"title": "Login", "url_name": "login"},
-]
+from .utils import DataMixin
 
 
-class BookHome(ListView):
+class BookHome(DataMixin, ListView):
     template_name = "books/index.html"
     context_object_name = "books"
-    extra_context = {
-        "title": "Home page",
-        "menu": menu,
-        "genre_selected": 0,
-    }
+    title_page = "Home page"
+    genre_selected = 0
 
     def get_queryset(self):
         return Book.published_book.all().select_related("genre")
 
 
-class AddBook(FormView):
+class AddBook(DataMixin, CreateView):
     form_class = AddBookForm
     template_name = "books/add_book.html"
     success_url = reverse_lazy("home")
-    extra_context = {
-        "title": "Добавить книгу",
-        "menu": menu,
-    }
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+    title_page = "Добавить книгу"
 
 
-class BookGenres(ListView):
+class BookGenres(DataMixin, ListView):
     template_name = "books/index.html"
     context_object_name = "books"
     allow_empty = False
@@ -55,13 +38,12 @@ class BookGenres(ListView):
     def get_context_data(self, *, object_list=..., **kwargs):
         context = super().get_context_data(**kwargs)
         genre = context["books"][0].genre
-        context["title"] = genre.genre
-        context["menu"] = menu
-        context["genre_selected"] = genre.pk
-        return context
+        return self.get_mixin_context(
+            context, title=genre.genre, genre_selected=genre.pk
+        )
 
 
-class BookTags(ListView):
+class BookTags(DataMixin, ListView):
     template_name = "books/index.html"
     context_object_name = "books"
 
@@ -73,21 +55,16 @@ class BookTags(ListView):
     def get_context_data(self, *, object_list=..., **kwargs):
         context = super().get_context_data(**kwargs)
         tag = Tags.objects.get(slug=self.kwargs["tag_slug"])
-        context["title"] = tag.tag
-        context["menu"] = menu
-        context["slug_selected"] = None
-        return context
+        return self.get_mixin_context(context, title=tag.tag)
 
 
-class ShowBook(DetailView):
+class ShowBook(DataMixin, DetailView):
     template_name = "books/book.html"
     slug_url_kwarg = "book_slug"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = context["book"].title
-        context["menu"] = menu
-        return context
+        return self.get_mixin_context(context, title=context["book"].title)
 
     def get_object(self, queryset=...):
         return get_object_or_404(
@@ -115,6 +92,4 @@ def about(request: HttpRequest) -> HttpResponse:
             upload_file.save()
     else:
         form = UploadFileForm()
-    return render(
-        request, "books/about.html", {"title": "About page", "menu": menu, "form": form}
-    )
+    return render(request, "books/about.html", {"title": "About page", "form": form})
