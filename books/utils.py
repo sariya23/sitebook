@@ -5,7 +5,6 @@ menu = [
     {"title": "About", "url_name": "about"},
     {"title": "Add book", "url_name": "add_book"},
     {"title": "Contact", "url_name": "contact"},
-    {"title": "Login", "url_name": "login"},
 ]
 
 
