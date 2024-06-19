@@ -446,3 +446,14 @@ ul.lang-list li a:hover {color: #fdc073;}
 .list-pages .page-num-selected:hover {
 	box-shadow: none;
 }
+
+.page-start-end > a {
+	display: inline-block;
+	border: black 1px solid;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.page-start-end > a:hover {
+	padding: 10px;
+}
