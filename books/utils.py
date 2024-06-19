@@ -14,7 +14,7 @@ class DataMixin:
     genre_selected: Optional[int] = None
     extra_context: dict[str, Any] = {}
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         if self.title_page is not None:
             self.extra_context["title"] = self.title_page
 
