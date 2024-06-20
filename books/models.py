@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models  # type: ignore
 from django.urls import reverse  # type: ignore
@@ -86,6 +87,14 @@ class Book(models.Model):
         blank=True,
         null=True,
         verbose_name="Обложка книги",
+    )
+    creator = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.SET_NULL,
+        related_name="creator",
+        null=True,
+        default=None,
+        verbose_name="Создатель статьи",
     )
 
     objects = models.Manager()

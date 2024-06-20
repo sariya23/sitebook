@@ -18,6 +18,7 @@ class BooksAdmin(admin.ModelAdmin):
         "rating",
         "genre",
         "tags",
+        "creator",
         "is_published",
     )
     list_display = (

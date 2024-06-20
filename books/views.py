@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -18,11 +20,16 @@ class BookHome(DataMixin, ListView):
         return Book.published_book.all().select_related("genre")
 
 
-class AddBook(DataMixin, CreateView):
+class AddBook(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddBookForm
     template_name = "books/add_book.html"
     success_url = reverse_lazy("home")
     title_page = "Добавить книгу"
+
+    def form_valid(self, form):
+        book = form.save(commit=False)
+        book.creator = self.request.user
+        return super().form_valid(form)
 
 
 class BookGenres(DataMixin, ListView):
@@ -84,6 +91,7 @@ def page_not_found(request: HttpRequest, exception) -> HttpResponseNotFound:
     return HttpResponseNotFound("<h1>Page not found</h1>")
 
 
+@login_required
 def about(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)

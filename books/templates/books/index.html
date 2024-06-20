@@ -6,6 +6,8 @@
     <li>
         <div class="article-panel">
             <p class="first">Жанр: {{ book.genre.genre }}</p>
+            <br>
+            <p class="first">Автор статьи: {{ book.creator.username|default:"Без автора" }}</p>
         </div>
         {% if book.photo %}
         <p>
