@@ -6,21 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('books', '0001_initial'),
+        ("books", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='book',
-            options={'ordering': ['-rating', '-title']},
+            name="book",
+            options={"ordering": ["-rating", "-title"]},
         ),
         migrations.AddField(
-            model_name='book',
-            name='slug',
-            field=models.SlugField(blank=True, default='', max_length=255),
+            model_name="book",
+            name="slug",
+            field=models.SlugField(blank=True, default="", max_length=255),
         ),
         migrations.AddIndex(
-            model_name='book',
-            index=models.Index(fields=['-rating'], name='books_book_rating_e5a7e2_idx'),
+            model_name="book",
+            index=models.Index(fields=["-rating"], name="books_book_rating_e5a7e2_idx"),
         ),
     ]

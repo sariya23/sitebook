@@ -1,6 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+    UsernameField,
+)
 from django.core.exceptions import ValidationError
 
 
@@ -17,7 +21,7 @@ class LoginUserForm(AuthenticationForm):
         fields = ("username", "password")
 
 
-class RegisterUserForm(forms.ModelForm):
+class RegisterUserForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = (
@@ -25,29 +29,30 @@ class RegisterUserForm(forms.ModelForm):
             "email",
             "first_name",
             "last_name",
-            "password",
-            "password_confirm",
+            "password1",
+            "password2",
         )
         labels = {
             "email": "E-mail",
             "first_name": "Имя",
             "last_name": "Фамилия",
         }
+        widgets = {
+            "email": forms.TextInput(attrs={"class": "form-input"}),
+            "first_name": forms.TextInput(attrs={"class": "form"}),
+            "last_name": forms.TextInput(attrs={"class": "form"}),
+        }
 
-    username = UsernameField(label="Логин")
-    password = forms.CharField(
+    username = UsernameField(
+        label="Логин", widget=forms.TextInput(attrs={"class": "form-input"})
+    )
+    password1 = forms.CharField(
         max_length=255, label="Пароль", widget=forms.PasswordInput()
     )
-    password_confirm = forms.CharField(
-        label="Повторите пароль", widget=forms.PasswordInput()
+    password2 = forms.CharField(
+        label="Повторите пароль",
+        widget=forms.PasswordInput(attrs={"class": "form-input"}),
     )
-
-    def clean_password_confirm(self):
-        clean_data = self.cleaned_data
-
-        if clean_data["password"] != clean_data["password_confirm"]:
-            raise ValidationError("Пароль не совпадают")
-        return clean_data["password"]
 
     def clean_email(self):
         email = self.cleaned_data["email"]

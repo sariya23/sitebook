@@ -13,6 +13,7 @@ repos:
           always_run: false
           pass_filenames: true
           verbose: false
+          exclude: ^migrations/
 
         - id: isort
           name: isort 📚
@@ -20,6 +21,7 @@ repos:
           language: python
           files: \.py$
           verbose: false
+          exclude: ^migrations/
 
         - id: black
           name: Black fix 🔧
@@ -28,6 +30,7 @@ repos:
           files: \.py$
           always_run: false
           verbose: false
+          exclude: ^migrations/
 
         - id: flake8
           name: Flake8 🎱
@@ -39,9 +42,10 @@ repos:
           always_run: false
           pass_filenames: true
           verbose: false
+          exclude: ^migrations/
         - id: mypy
           name: Mypy
           entry: mypy
           files: \.py$
           language: system
-          args: ["--exclude", "^books/migrations/$", "--ignore"]
+          exclude: ^migrations/

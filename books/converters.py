@@ -6,4 +6,3 @@ class FourDigitYearConverter:
 
     def to_url(self, value) -> str:
         return str(value)
-    
