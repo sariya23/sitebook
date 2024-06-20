@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 
 class LoginUserForm(AuthenticationForm):
     username = UsernameField(
-        label="Логин", widget=forms.TextInput(attrs={"class": "form-input"})
+        label="Имя пользователя", widget=forms.TextInput(attrs={"class": "form-input"})
     )
     password = forms.CharField(
         label="Пароль", widget=forms.PasswordInput(attrs={"class": "form-input"})
