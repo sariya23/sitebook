@@ -27,7 +27,7 @@
                     {% endfor %}
                     {% if user.is_authenticated %}
                     <li class="last">
-                        {{ user.username }} |
+                        <a href="{% url 'users:profile' %}">{{ user.username }}</a> |
                         <a href="{% url 'users:logout_user' %}">
                             Logout
                         </a>
