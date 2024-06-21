@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
     AuthenticationForm,
+    PasswordChangeForm,
     UserCreationForm,
     UsernameField,
 )
@@ -91,4 +92,17 @@ class UserProfileForm(forms.ModelForm):
         label="E-mail",
         widget=forms.TextInput(attrs={"class": "form-input"}),
         disabled=True,
+    )
+
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Старый пароль", widget=forms.PasswordInput(attrs={"class": "form-input"})
+    )
+    new_password1 = forms.CharField(
+        label="Новый пароль", widget=forms.PasswordInput(attrs={"class": "form-input"})
+    )
+    new_password2 = forms.CharField(
+        label="Повторите новый пароль",
+        widget=forms.PasswordInput(attrs={"class": "form-input"}),
     )
