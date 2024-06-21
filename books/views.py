@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -20,11 +20,12 @@ class BookHome(DataMixin, ListView):
         return Book.published_book.all().select_related("genre")
 
 
-class AddBook(LoginRequiredMixin, DataMixin, CreateView):
+class AddBook(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddBookForm
     template_name = "books/add_book.html"
     success_url = reverse_lazy("home")
     title_page = "Добавить книгу"
+    permission_required = "books.add_book"
 
     def form_valid(self, form):
         book = form.save(commit=False)
