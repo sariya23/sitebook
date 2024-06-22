@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 import os
 from pathlib import Path
 
@@ -155,4 +156,6 @@ EMAIL_ADMIN = EMAIL_HOST_USER
 
 
 AUTH_USER_MODEL = "users.User"
+
 DEFAULT_USER_IMAGE = MEDIA_URL + os.path.join("users", "go.jpg")
+STAR_PATH = MEDIA_URL + os.path.join("books", "star.png")

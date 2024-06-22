@@ -1,5 +1,7 @@
 from typing import Any, Optional
 
+from sitebook import settings
+
 menu = [
     {"title": "Home", "url_name": "home"},
     {"title": "About", "url_name": "about"},
@@ -13,10 +15,12 @@ class DataMixin:
     genre_selected: Optional[int] = None
     extra_context: dict[str, Any] = {}
     paginate_by = 3
+    star_path = settings.STAR_PATH
 
     def __init__(self):
         if self.title_page is not None:
             self.extra_context["title"] = self.title_page
+        self.extra_context["star_path"] = settings.STAR_PATH
 
         if "menu" not in self.extra_context:
             self.extra_context["menu"] = menu
