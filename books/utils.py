@@ -15,12 +15,12 @@ class DataMixin:
     genre_selected: Optional[int] = None
     extra_context: dict[str, Any] = {}
     paginate_by = 3
-    star_path = settings.STAR_PATH
 
     def __init__(self):
         if self.title_page is not None:
             self.extra_context["title"] = self.title_page
         self.extra_context["star_path"] = settings.STAR_PATH
+        self.extra_context["default_cover"] = settings.DEFAULT_BOOK_COVER
 
         if "menu" not in self.extra_context:
             self.extra_context["menu"] = menu

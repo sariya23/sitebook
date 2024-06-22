@@ -159,3 +159,4 @@ AUTH_USER_MODEL = "users.User"
 
 DEFAULT_USER_IMAGE = MEDIA_URL + os.path.join("users", "go.jpg")
 STAR_PATH = MEDIA_URL + os.path.join("books", "star.png")
+DEFAULT_BOOK_COVER = MEDIA_URL + os.path.join("books", "default_cover.jpg")
