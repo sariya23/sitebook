@@ -428,12 +428,23 @@ ul.lang-list li a:hover {color: #fdc073;}
 	text-decoration: none;
 }
 .list-pages .page-num, .page-num-selected {
-	display: inline-block;
-	width: 60px;
-	height: 44px;
-	padding: 16px 0 0 0;
-	border: 1px solid #d0d0d0;
-	border-radius: 30px;
+    display: inline-block;
+    width: 60px;
+    height: 44px;
+    padding: 0; 
+    border: 1px solid #d0d0d0;
+    border-radius: 30px;
+    position: relative;
+}
+
+.list-pages .page-num a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
 }
 .list-pages .page-num:hover {
 	box-shadow: 3px 3px 1px #d0d0d0;
