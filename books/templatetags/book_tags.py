@@ -1,6 +1,8 @@
 from django import template
 from django.db.models import Count
 
+from sitebook import settings
+
 from ..models import Genre, Tags
 
 register = template.Library()
@@ -20,3 +22,8 @@ def show_genres(genre_selected=0) -> dict[str, list[dict]]:
 @register.inclusion_tag("books/list_tags.html")
 def show_tags():
     return {"tags": Tags.objects.annotate(total=Count("tags")).filter(total__gt=0)}
+
+
+@register.inclusion_tag("books/rating.html")
+def show_rating(book_rating: int):
+    return {"rating": book_rating, "star_path": settings.STAR_PATH}

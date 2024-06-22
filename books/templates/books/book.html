@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load book_tags %}
 
 {% block content %}
 
@@ -10,7 +11,35 @@
 <p>
     <img class="img-article-left" src="{{ book.photo.url }}" alt="oops">
 </p>
+{% else %}
+<p>
+    <img src="{{ default_cover }}" alt="oops" class="img-article-left">
+</p>
 {% endif %}
-
+<p>
+    <i>Автор</i>: {{ book.author }}
+</p>
+<span>
+    Рейтинг:
+</span>
+{% show_rating book.rating %}
+<br>
+<p>
+    <i>Жанр</i>: {{ book.genre }}
+</p>
+{% with tags=book.tags.all %}
+{% if tags %}
+    <p style="display: inline;"><i>Теги: </i></p>
+    {% for t in tags %}
+        {% if not forloop.last %}
+        <span>
+            {{t.tag}},
+        </span>
+        {% else %}
+        <span>{{ t.tag }}</span>
+{% endif %}
+    {% endfor %}
+{% endif %}
+{% endwith %}
 {{ book.description|linebreaks }}
 {% endblock %}

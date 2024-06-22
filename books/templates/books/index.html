@@ -21,9 +21,7 @@
         {% endif %}
         <h2>{{ book.title }}, {{ book.author.name }} {{ book.author.surname }}</h2>
         <span><i>Рейтинг: </i></span>
-        {% for r in book.rating|get_range %}
-            <img src="{{ star_path }}" alt="oops" width="15" height="15">
-        {% endfor %}
+        {% show_rating book.rating %}
         <br>
         {% with tags=book.tags.all %}
         {% if tags %}

@@ -1,0 +1,5 @@
+{% load book_tags %}
+
+{% for r in rating|get_range %}
+<img src="{{ star_path }}" alt="oops" width="15" height="15">
+{% endfor %}
