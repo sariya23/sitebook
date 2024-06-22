@@ -26,6 +26,6 @@ class DataMixin:
 
     def get_mixin_context(self, context: dict[str, Any], **kwargs):
         context["menu"] = menu
-        context["genre_select"] = None
+        context["genre_selected"] = None
         context.update(kwargs)
         return context
