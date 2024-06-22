@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from .forms import AddBookForm, UploadFileForm
 from .models import Book, Tags, UploadFile
@@ -31,6 +31,13 @@ class AddBook(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, CreateView
         book = form.save(commit=False)
         book.creator = self.request.user
         return super().form_valid(form)
+
+
+class EditBookView(DataMixin, UpdateView):
+    title_page = "Редактирование статьи"
+    model = Book
+    template_name = "books/add_book.html"
+    fields = ["title", "description", "photo", "author", "genre", "tags"]
 
 
 class BookGenres(DataMixin, ListView):
