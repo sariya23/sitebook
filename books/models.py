@@ -49,7 +49,7 @@ def translate_to_english(text: str) -> str:
 
 class Book(models.Model):
     class Meta:
-        ordering = ["id", "-rating", "-title"]
+        ordering = ["-rating", "-title"]
         indexes = [models.Index(fields=["-rating"])]
         verbose_name = "Книга"
         verbose_name_plural = "Книги"
