@@ -33,11 +33,13 @@ class AddBook(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, CreateView
         return super().form_valid(form)
 
 
-class EditBookView(DataMixin, UpdateView):
+class EditBookView(PermissionRequiredMixin, DataMixin, UpdateView):
     title_page = "Редактирование статьи"
     model = Book
     template_name = "books/add_book.html"
+    success_url = reverse_lazy("home")
     fields = ["title", "description", "photo", "author", "genre", "tags"]
+    permission_required = "books.change_book"
 
 
 class BookGenres(DataMixin, ListView):
