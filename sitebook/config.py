@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     smtp_key: str
     email_host_user: str
     email_host: str
+    debug: bool
+    allowed_hosts: list[str]
     model_config = SettingsConfigDict(env_file=".env")
 
 
